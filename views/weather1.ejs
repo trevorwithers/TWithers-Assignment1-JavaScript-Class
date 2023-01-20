@@ -1,0 +1,94 @@
+<!-- Trevor Withers -->
+<!-- Creates the html code based on a given route and given parameters -->
+
+<%- include('./partials/header', { title: "Trevor's Weather Wiki" }); %>
+
+<!-- Calls a function based on the pages stage recieved -->
+<% if (pageStage === 0) {%>
+    <% showAllWeatherData(); %>
+<% } else if (pageStage === 1) { %>
+    <% showLocalWeatherData(); %>
+<% } else if (pageStage === 2) { %>
+    <% showLocalDayWeatherData(); %>
+<% } else if (pageStage === 3) { %>
+    <% showWarmestLocationGivenDay(); %>
+<% } else if (pageStage === 4) { %>
+    <% showWarmestDayGivenLocation(); %>
+<% } else if (pageStage === 5) { %>
+    <% showAverageTemp(); %>
+<% } else if (pageStage === 6) { %>
+    <% showSunnyDays(); %>
+<% } %>
+
+<!-- Displays weather data for all locations using a for loop to step through the passed array -->
+<% function showAllWeatherData() { %>
+    <div class="item3">
+        <table id="weekdays">
+            <% for(let i = 0; i < weekday.length; i++) { %>
+                <tr>
+                    <th><%= weekday[i][0][1]; %></th>
+                </tr>
+                <tr>
+                    <% for(let x = 1; x < weekday[i].length; x++) { %>
+                        <td><%= weekday[i][x][0].charAt(0).toUpperCase() + weekday[i][x][0].slice(1) %> is <%= weekday[i][x][1][1]; %>&#176; and <%= weekday[i][x][1][0]; %>.</td>
+                    <% } %>
+                </tr>
+            <% } %>
+        </table>
+    </div>
+<% } %>
+
+<!-- Displays weather data for a given location using a for loop to step through the passed array -->
+<% function showLocalWeatherData() { %>
+    <div class="item3">
+        <h2><%= weekday[index][0][1]; %></h2>
+        <% for(let i = 1; i < weekday[index].length; i++) { %>
+            <p><%= weekday[index][i][0].charAt(0).toUpperCase() + weekday[index][i][0].slice(1) %> is <%= weekday[index][i][1][1]; %>&#176; and <%= weekday[index][i][1][0]; %>.</p>
+        <% } %>
+    </div>
+<% } %>
+
+<!-- Displays weather data for a given location on a given day using a for loop to step through the passed array -->
+<% function showLocalDayWeatherData() { %>
+    <div class="item3">
+        <h2><%= weekday[index][0][1]; %></h2>
+        <p><%= passedDay; %> is <%= weekday[index][dayIndex][1][1]; %>&#176; and <%= weekday[index][dayIndex][1][0]; %>.</p>
+    </div>
+<% } %>
+
+<!-- Displays warmest day from the passed data -->
+<% function showWarmestLocationGivenDay() { %>
+    <div class="item3">
+        <h2><%= warmestCityDay; %></h2>
+        <p>The warmest city is <%= warmestCityName; %> at <%= warmestCityTemp; %>&#176;. </p>
+    </div>
+<% } %>
+
+<!-- Displays warmest city based on the passed data -->
+<% function showWarmestDayGivenLocation() { %>
+    <div class="item3">
+        <h2><%= passedCity[index][0][1]; %></h2>
+        <p>The warmest day is <%= passedCity[index][tempIndex][0].charAt(0).toUpperCase() + passedCity[index][tempIndex][0].slice(1); %> at <%= passedCity[index][tempIndex][1][1]; %>&#176;. </p>
+    </div>
+<% } %>
+
+<!-- Displays displays the average temperature based on passed data -->
+<% function showAverageTemp() { %>
+    <div class="item3">
+        <h2>Average Weekly City Temperatures</h2>
+        <p>The average weekly temperature for Kingston is <%= cityAvgs[0] %>&#176;.</p>
+        <p>The average weekly temperature for Ottawa is <%= cityAvgs[1] %>&#176;.</p>
+        <p>The average weekly temperature for Toronto is <%= cityAvgs[2] %>&#176;.</p>
+    </div>
+<% } %>
+
+<!-- Displays all sunny days for a given location based on passed data -->
+<% function showSunnyDays() { %>
+    <div class="item3">
+    <h2>Sunny Days</h2>
+    <p>
+        <%= passedCity; %> has <%= sunnyDays.length; %> sunny days, which are <% for(let i = 0; i < sunnyDays.length; i++) { %><% if (sunnyDays.length > 2 && i != 0) { %>, <% } %><% if (i == sunnyDays.length-1 && i != 0) { %>and <%= weekDays[sunnyDays[i]][0].charAt(0).toUpperCase() + weekDays[sunnyDays[i]][0].slice(1); %><% break; %><% } %><%= weekDays[sunnyDays[i]][0].charAt(0).toUpperCase() + weekDays[sunnyDays[i]][0].slice(1); %><% } %>.
+    </p>
+<% } %>
+
+<%- include('./partials/footer'); %>
